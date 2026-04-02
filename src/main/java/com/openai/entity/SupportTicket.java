@@ -18,7 +18,7 @@ public class SupportTicket{
     private Long id;
     private  String title;
     private String description;
-    private String customerInfo;
+    private String customerEmail;
     private String assignedTo;
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
@@ -28,6 +28,7 @@ public class SupportTicket{
     private Category category;
     private Boolean isEscalated=false;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private LocalDateTime slaDeadline;
     @ElementCollection
     private List<String> comments;
