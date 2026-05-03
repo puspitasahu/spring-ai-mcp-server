@@ -4,6 +4,7 @@ import com.openai.tools.ITSupportTicketTool;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
+/*
 @Service
 public class OpenAIChatService{
 
@@ -30,4 +31,5 @@ public class OpenAIChatService{
 
     }
 }
+*/
 

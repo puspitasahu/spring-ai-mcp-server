@@ -2,9 +2,20 @@ spring:
   application:
     name: spring-openai-demo
 
+  main:
+    web-application-type : NONE
+    banner-mode : OFF
+
   ai:
     openai:
       api-key: ${OPEN_API_KEY}
+    mcp:
+      server:
+        enabled : true
+        name : ai-support-mcp
+        type : SYNC
+        stdio : true
+
 
   datasource:
     url: jdbc:h2:mem:testdb
@@ -15,10 +26,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
 
   h2:
     console:
@@ -27,3 +38,7 @@ spring:
 
 server:
   port: 9292
+
+logging:
+  level :
+    root : error
