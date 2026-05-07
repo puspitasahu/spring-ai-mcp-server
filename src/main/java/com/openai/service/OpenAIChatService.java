@@ -1,7 +1,7 @@
 package com.openai.service;
 
 import com.openai.tools.ITSupportTicketTool;
-import org.springframework.ai.chat.client.ChatClient;
+//import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
 /*

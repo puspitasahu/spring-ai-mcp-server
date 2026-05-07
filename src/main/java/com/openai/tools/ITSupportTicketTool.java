@@ -1,5 +1,6 @@
 package com.openai.tools;
 
+import com.openai.dto.TicketResponse;
 import com.openai.entity.SupportTicket;
 import com.openai.service.SupportTicketService;
 import lombok.RequiredArgsConstructor;
@@ -11,36 +12,77 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ITSupportTicketTool{
+public class ITSupportTicketTool {
+
     private final SupportTicketService supportTicketService;
 
-    @Tool(description = "Create  a support ticket with issue description and email")
-    public SupportTicket createSupportTicket(
+    @Tool(description = "Create a support ticket with issue description and email")
+    public TicketResponse createSupportTicket(
             @ToolParam(description = "Issue description") String description,
-            @ToolParam(description = "User Email")String email){
-        return supportTicketService.createSupportTicket(description,email);
+            @ToolParam(description = "User Email") String email) {
+
+        SupportTicket ticket =
+                supportTicketService.createSupportTicket(description, email);
+
+        return new TicketResponse(
+                ticket.getId(),
+                ticket.getDescription(),
+                ticket.getCustomerEmail(),
+                ticket.getStatus() != null
+                        ? ticket.getStatus().toString()
+                        : "OPEN"
+        );
     }
 
-    @Tool(description="Add comment to a support ticket")
-    public String addComment(@ToolParam(description = "Ticket ID")Long id,
-                             @ToolParam(description = "Comment Text") String comment){
-        return supportTicketService.addComments(id,comment);
-    }
+   /* @Tool(description = "Create support ticket")
+    public String createSupportTicket(String description, String email) {
 
-    @Tool(description = "Escalate a support ticket to high priority")
-    public String escalateIssue(@ToolParam(description = "Ticket ID") Long id){
-        return supportTicketService.escalateIssue(id);
-    }
+        System.err.println("Tool invoked");
+
+        return "SUCCESS";
+    }*/
 
     @Tool(description = "Get details of a support ticket by its ID")
-    public SupportTicket getTicketDetails(@ToolParam(description = "Ticket ID") Long id){
-        return supportTicketService.getTicketDetails(id);
+    public TicketResponse getTicketDetails(
+            @ToolParam(description = "Ticket ID") Long id) {
 
+        SupportTicket ticket =
+                supportTicketService.getTicketDetails(id);
+
+        return new TicketResponse(
+                ticket.getId(),
+                ticket.getDescription(),
+                ticket.getCustomerEmail(),
+                ticket.getStatus().toString()
+        );
     }
 
     @Tool(description = "List all support tickets")
-    public List<SupportTicket> getAllTickets(){
-        return supportTicketService.getAllTickets();
+    public List<TicketResponse> getAllTickets() {
 
+        return supportTicketService.getAllTickets()
+                .stream()
+                .map(ticket -> new TicketResponse(
+                        ticket.getId(),
+                        ticket.getDescription(),
+                        ticket.getCustomerEmail(),
+                        ticket.getStatus().toString()
+                ))
+                .toList();
+    }
+
+    @Tool(description = "Add comment to a support ticket")
+    public String addComment(
+            @ToolParam(description = "Ticket ID") Long id,
+            @ToolParam(description = "Comment Text") String comment) {
+
+        return supportTicketService.addComments(id, comment);
+    }
+
+    @Tool(description = "Escalate a support ticket to high priority")
+    public String escalateIssue(
+            @ToolParam(description = "Ticket ID") Long id) {
+
+        return supportTicketService.escalateIssue(id);
     }
 }
