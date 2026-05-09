@@ -30,7 +30,7 @@ public class SupportTicket{
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime slaDeadline;
-    @ElementCollection
+    @ElementCollection(fetch=FetchType.EAGER)
     private List<String> comments;
 
 }
